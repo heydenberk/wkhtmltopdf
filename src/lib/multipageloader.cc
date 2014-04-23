@@ -234,6 +234,17 @@ void ResourceObject::loadProgress(int p) {
 	emit multiPageLoader.outer.loadProgress(multiPageLoader.progressSum / multiPageLoader.resources.size());
 }
 
+QString ResourceObject::evaluateJavaScript(const QString & str) {
+    return webPage.mainFrame()->evaluateJavaScript(str).toString();
+}
+
+QStringList ResourceObject::evaluateJavaScripts(const QStringList & strs) {
+    QStringList results;
+    for (QStringList::const_iterator it=strs.begin(); it != strs.end(); ++it) {
+        results.append(evaluateJavaScript(*it));
+    }
+    return results;
+}
 
 void ResourceObject::loadFinished(bool ok) {
 	// If we are finished, this migth be a potential bug.
@@ -254,15 +265,19 @@ void ResourceObject::loadFinished(bool ok) {
 			warning(QString("Failed loading page ") + url.toString() + " (ignored)");
 	}
 
-	// Evaluate extra user supplied javascript
-	foreach (const QString & str, settings.runScript)
-		webPage.mainFrame()->evaluateJavaScript(str);
+ //    QStringList sl;
+ //    sl.append(QString("1+1"));
+ //    settings.runScript = sl;
+	// // Evaluate extra user supplied javascript
+ //    QStringList r = evaluateJavaScripts(settings.runScript);
+ //    std::cout << "   runResults: " << r.join(":").toLocal8Bit().constData() << std::endl;
 
 	// XXX: If loading failed there's no need to wait
 	//      for javascript on this resource.
 	if (!ok || signalPrint || settings.jsdelay == 0) loadDone();
 	else if (!settings.windowStatus.isEmpty()) waitWindowStatus();
 	else QTimer::singleShot(settings.jsdelay, this, SLOT(loadDone()));
+
 }
 
 void ResourceObject::waitWindowStatus() {

@@ -87,7 +87,9 @@ public:
 	MyQWebPage webPage;
 	LoaderObject lo;
 	int httpErrorCode;
-	const settings::LoadPage settings;
+	settings::LoadPage settings;
+    QString evaluateJavaScript(const QString & str);
+    QStringList evaluateJavaScripts(const QStringList & strs);
 public slots:
 	void load();
 	void loadStarted();
