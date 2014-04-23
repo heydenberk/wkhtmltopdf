@@ -321,7 +321,7 @@ void ResourceObject::loadFinished(bool ok) {
 		"        return values;\n"
 		"    });\n"
 		"\n"
-		"    return clickzones.filter(Boolean);\n"
+		"    return clickzones;\n"
 		"})();";
 	std::cout << text;
 	QStringList sl;
