@@ -72,7 +72,7 @@ QNetworkReply * MyNetworkAccessManager::createRequest(Operation op, const QNetwo
 	if (disposed)
 	{
 		emit warning("Received createRequest signal on a disposed ResourceObject's NetworkAccessManager. "
-			     "This migth be an indication of an iframe taking to long to load.");
+				 "This migth be an indication of an iframe taking to long to load.");
 		// Needed to avoid race conditions by spurious network requests
 		// by scripts or iframes taking too long to load.
 		QNetworkRequest r2 = req;
@@ -153,7 +153,7 @@ ResourceObject::ResourceObject(MultiPageLoaderPrivate & mpl, const QUrl & u, con
 	settings(s) {
 
 	connect(&networkAccessManager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator *)),this,
-	        SLOT(handleAuthenticationRequired(QNetworkReply *, QAuthenticator *)));
+			SLOT(handleAuthenticationRequired(QNetworkReply *, QAuthenticator *)));
 	foreach (const QString & path, s.allowed)
 		networkAccessManager.allow(path);
 	if (url.scheme() == "file")
@@ -166,7 +166,7 @@ ResourceObject::ResourceObject(MultiPageLoaderPrivate & mpl, const QUrl & u, con
 
 	//If some ssl error occurs we want sslErrors to be called, so the we can ignore it
 	connect(&networkAccessManager, SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError>&)),this,
-	        SLOT(sslErrors(QNetworkReply*, const QList<QSslError>&)));
+			SLOT(sslErrors(QNetworkReply*, const QList<QSslError>&)));
 
 	connect(&networkAccessManager, SIGNAL(finished (QNetworkReply *)),
 			this, SLOT(amfinished (QNetworkReply *) ) );
@@ -188,7 +188,7 @@ ResourceObject::ResourceObject(MultiPageLoaderPrivate & mpl, const QUrl & u, con
 #if QT_VERSION >= 0x040500
 		if (settings.proxy.type == QNetworkProxy::HttpProxy)
 			proxy.setCapabilities(QNetworkProxy::CachingCapability |
-			                      QNetworkProxy::TunnelingCapability);
+								  QNetworkProxy::TunnelingCapability);
 #endif
 		if (!settings.proxy.user.isEmpty())
 			proxy.setUser(settings.proxy.user);
@@ -235,15 +235,15 @@ void ResourceObject::loadProgress(int p) {
 }
 
 QString ResourceObject::evaluateJavaScript(const QString & str) {
-    return webPage.mainFrame()->evaluateJavaScript(str).toString();
+	return webPage.mainFrame()->evaluateJavaScript(str).toString();
 }
 
 QStringList ResourceObject::evaluateJavaScripts(const QStringList & strs) {
-    QStringList results;
-    for (QStringList::const_iterator it=strs.begin(); it != strs.end(); ++it) {
-        results.append(evaluateJavaScript(*it));
-    }
-    return results;
+	QStringList results;
+	for (QStringList::const_iterator it=strs.begin(); it != strs.end(); ++it) {
+		results.append(evaluateJavaScript(*it));
+	}
+	return results;
 }
 
 void ResourceObject::loadFinished(bool ok) {
@@ -265,12 +265,12 @@ void ResourceObject::loadFinished(bool ok) {
 			warning(QString("Failed loading page ") + url.toString() + " (ignored)");
 	}
 
- //    QStringList sl;
- //    sl.append(QString("1+1"));
- //    settings.runScript = sl;
-	// // Evaluate extra user supplied javascript
- //    QStringList r = evaluateJavaScripts(settings.runScript);
- //    std::cout << "   runResults: " << r.join(":").toLocal8Bit().constData() << std::endl;
+	QStringList sl;
+	sl.append(QString("1+1"));
+	settings.runScript = sl;
+	// Evaluate extra user supplied javascript
+	QStringList r = evaluateJavaScripts(settings.runScript);
+	std::cout << "   runResults: " << r.join(":").toLocal8Bit().constData() << std::endl;
 
 	// XXX: If loading failed there's no need to wait
 	//      for javascript on this resource.
@@ -438,7 +438,7 @@ void ResourceObject::load() {
 
 
 	typedef QPair<QString, QString> SSP;
- 	foreach (const SSP & pair, settings.cookies)
+	foreach (const SSP & pair, settings.cookies)
 		multiPageLoader.cookieJar->useCookie(url, pair.first, pair.second);
 
 	QNetworkRequest r = QNetworkRequest(url);
@@ -482,7 +482,7 @@ void MyCookieJar::saveToFile(const QString & path) {
 
 void MultiPageLoaderPrivate::loadDone() {
 	 if (!settings.cookieJar.isEmpty())
-	 	cookieJar->saveToFile(settings.cookieJar);
+		cookieJar->saveToFile(settings.cookieJar);
 
 	if (!finishedEmitted) {
 		finishedEmitted = true;
@@ -507,7 +507,7 @@ bool MultiPageLoader::copyFile(QFile & src, QFile & dst) {
 //          if (dst.write(buf.data(),r) != r) return false;
 //      }
 
-    if (dst.write( src.readAll() ) == -1) return false;
+	if (dst.write( src.readAll() ) == -1) return false;
 
 	src.close();
 	dst.close();
