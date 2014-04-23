@@ -274,7 +274,6 @@ void ResourceObject::loadFinished(bool ok) {
 		"        var rect = layerNode.getBoundingClientRect();\n"
 		"        var left = parseInt(layerNode.style.left.slice(0, -2), 10);\n"
 		"        var top = parseInt(layerNode.style.top.slice(0, -2), 10);\n"
-		"        if (left > maxWidth || top > maxHeight) return null;\n"
 		"\n"
 		"        var clickzoneProperties = {\n"
 		"            \"alt\": \"alt\",\n"
