@@ -313,7 +313,6 @@ void ResourceObject::loadFinished(bool ok) {
 		"            values[camelKey] = propertyValue;\n"
 		"        });\n"
 		"\n"
-		"        if (!values.href) return null;\n"
 		"\n"
 		"        // Also map alt to title on the frontend.\n"
 		"        values.l = values.alt;\n"
