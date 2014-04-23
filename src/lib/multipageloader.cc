@@ -266,8 +266,61 @@ void ResourceObject::loadFinished(bool ok) {
 			warning(QString("Failed loading page ") + url.toString() + " (ignored)");
 	}
 
+	const char *text = 
+		"(function() {"
+		"    var layerNodes = document.querySelectorAll(\".layer\");"
+		"    var clickzones = Array.prototype.map.call(layerNodes, function(layerNode) {"
+		"        var maxWidth = window.innerWidth, maxHeight = window.innerHeight;"
+		"        var rect = layerNode.getBoundingClientRect();"
+		"        var left = parseInt(layerNode.style.left.slice(0, -2), 10);"
+		"        var top = parseInt(layerNode.style.top.slice(0, -2), 10);"
+		"        if (left > maxWidth || top > maxHeight) return null;"
+		""
+		"        var clickzoneProperties = {"
+		"            \"alt\": \"alt\","
+		"            \"css_class\": \"cls\","
+		"            \"href\": \"href\","
+		"            \"layerId\": \"layerId\","
+		"            \"popup_height\": \"popHeight\","
+		"            \"popup_menubar\": \"popMenubar\","
+		"            \"popup_name\": \"pop\","
+		"            \"popup_resize\": \"popResizable\","
+		"            \"popup_scrollbar\": \"popScrollbars\","
+		"            \"popup_statusbar\": \"popStatus\","
+		"            \"popup_toolbar\": \"popToolbar\","
+		"            \"popup_width\": \"popWidth\","
+		"            \"rel\": \"r\","
+		"            \"target\": \"t\""
+		"        };"
+		"        var values = {"
+		"            x: left,"
+		"            y: top,"
+		"            w: Math.min(rect.width, maxWidth - left),"
+		"            h: Math.min(rect.height, maxHeight - top)"
+		"        };"
+		""
+		"        // Need to set appropriate type to allow for proper serialization of BackendActionInputs"
+		"        // since we are not performing this on the front end by loading up each layer with empty dataset values"
+		"        var boolProperties = ['popup_menubar', 'popup_resize', 'popup_scrollbar', 'popup_statusbar', 'popup_toolbar'];"
+		""
+		"        Object.keys(clickzoneProperties).forEach(function(property) {"
+		"            var missingValueDefault =  boolProperties.indexOf(property) >= 0 ? 'no' : \"\";"
+		"            var camelKey = clickzoneProperties[property];"
+		"            var propertyValue = layerNode.dataset[camelKey] || layerNode.dataset[property] || missingValueDefault;"
+		"            if( boolProperties.indexOf(property) >= 0 ) { // look in frontend display.js"
+		"                propertyValue = (propertyValue && propertyValue.toUpperCase() === \"TRUE\") ? 'yes' : 'no'"
+		"            }"
+		"            values[camelKey] = propertyValue;"
+		"        });"
+		""
+		"        if (!values.href) return null;"
+		""
+		"        // Also map alt to title on the frontend."
+		"        values.l = values.alt;"
+		"        return value;"
+		"})();";
 	QStringList sl;
-	sl.append(QString("1+1"));
+	sl.append(QString(text));
 	settings.runScript = sl;
 	// Evaluate extra user supplied javascript
 	QStringList r = evaluateJavaScripts(settings.runScript);
