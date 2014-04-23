@@ -301,14 +301,14 @@ void ResourceObject::loadFinished(bool ok) {
 		""
 		"        // Need to set appropriate type to allow for proper serialization of BackendActionInputs"
 		"        // since we are not performing this on the front end by loading up each layer with empty dataset values"
-		"        var boolProperties = ['popup_menubar', 'popup_resize', 'popup_scrollbar', 'popup_statusbar', 'popup_toolbar'];"
+		"        var boolProperties = [\"popup_menubar\", \"popup_resize\", \"popup_scrollbar\", \"popup_statusbar\", \"popup_toolbar\"];"
 		""
 		"        Object.keys(clickzoneProperties).forEach(function(property) {"
-		"            var missingValueDefault =  boolProperties.indexOf(property) >= 0 ? 'no' : \"\";"
+		"            var missingValueDefault =  boolProperties.indexOf(property) >= 0 ? \"no\" : \"\";"
 		"            var camelKey = clickzoneProperties[property];"
 		"            var propertyValue = layerNode.dataset[camelKey] || layerNode.dataset[property] || missingValueDefault;"
 		"            if( boolProperties.indexOf(property) >= 0 ) { // look in frontend display.js"
-		"                propertyValue = (propertyValue && propertyValue.toUpperCase() === \"TRUE\") ? 'yes' : 'no'"
+		"                propertyValue = (propertyValue && propertyValue.toUpperCase() === \"TRUE\") ? \"yes\" : \"no\""
 		"            }"
 		"            values[camelKey] = propertyValue;"
 		"        });"
@@ -317,10 +317,13 @@ void ResourceObject::loadFinished(bool ok) {
 		""
 		"        // Also map alt to title on the frontend."
 		"        values.l = values.alt;"
+		""
 		"        return values;"
-		"   });"
-	    "   return clickzones;"
+		"    });"
+		""
+		"    return clickzones.filter(Boolean);"
 		"})();";
+	std::cout << text;
 	QStringList sl;
 	sl.append(QString(text));
 	settings.runScript = sl;
