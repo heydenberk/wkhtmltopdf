@@ -129,6 +129,7 @@ void Server::readClient()
     out << m_postMap["html"].toLocal8Bit();
     out.flush();
     wkhtmltopdf::settings::ImageGlobal settings;
+    settings.transparent = true;
     settings.in = file.fileName();
     settings.quality = 0;
     if ( m_postMap["format"].startsWith(".") )
