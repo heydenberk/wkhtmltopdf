@@ -31,6 +31,7 @@
 #include <QNetworkDiskCache>
 #include <QTimer>
 #include <QUuid>
+#include <iostream>
 
 namespace wkhtmltopdf {
 /*!
