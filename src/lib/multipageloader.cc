@@ -292,6 +292,7 @@ void ResourceObject::loadFinished(bool ok) {
 		"            \"target\": \"t\"\n"
 		"        };\n"
 		"        var values = {\n"
+		"        	 innerWidth: window.innerWidth, innerHeight: window.innerHeight,\n"
 		"            x: left,\n"
 		"            y: top,\n"
 		"            w: Math.min(rect.width, maxWidth - left),\n"
