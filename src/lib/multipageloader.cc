@@ -317,7 +317,7 @@ void ResourceObject::loadFinished(bool ok) {
 		""
 		"        // Also map alt to title on the frontend."
 		"        values.l = values.alt;"
-		"        return value;"
+		"        return values;"
 		"})();";
 	QStringList sl;
 	sl.append(QString(text));
