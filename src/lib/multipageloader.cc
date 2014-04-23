@@ -321,7 +321,7 @@ void ResourceObject::loadFinished(bool ok) {
 		"        return values;\n"
 		"    });\n"
 		"\n"
-		"    return clickzones;\n"
+		"    return JSON.stringify(clickzones);\n"
 		"})();";
 	std::cout << text;
 	QStringList sl;
